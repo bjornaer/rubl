@@ -23,17 +23,27 @@ impl Lexer {
     pub fn new(contents: String) -> Self {
         return Self { contents: contents };
     }
+
+    pub fn lex(&self) {
+        println!("{}",self.contents)
+    }
 }
 fn main() {
-    let file = env::args().nth(1).unwrap();
+    let maybe_file = env::args().nth(1);
+    let file = if let Some(f) = maybe_file {
+        f
+    } else {
+        panic!("Expected a file.")
+    };
+
     let maybe_contents = fs::read_to_string(file);
     let contents = if maybe_contents.is_ok() {
         maybe_contents.unwrap()
     } else {
-        panic!("");
+        panic!("Could Not Open file for reading.");
     };
 
     let lexer = Lexer::new(contents);
 
-    println!("{:?}", lexer)
+    lexer.lex()
 }
